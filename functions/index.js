@@ -6,16 +6,19 @@ admin.initializeApp(functions.config().firebase);
 //Get trigger when a user signs in for the first time using a federated identity provider.
 exports.addAccount = functions.auth.user().onCreate(user => {
     var id = user.uid;
+    var displayName = user.displayName;
     var db = admin.database();
     var refUser = db.ref("user");
     var refRecord = db.ref("record");
     var newUser = {};
     newUser[id] = {
-        managerid: '',
+        id: '',
+        name: displayName,
+        employee: '',
         permission: ''
     }
     var newUserRecord = {};
-    newUserRecord[id] = {};
+    newUserRecord[id] = "";
     refUser.update(newUser);
     refRecord.update(newUserRecord);
 });
